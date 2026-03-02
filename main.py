@@ -1,10 +1,10 @@
-import random
-import requests
+
 from fastapi import FastAPI, Request
 from starlette.templating import Jinja2Templates
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
 formul = ["S = п*r²","C = п*d", "S=a*b", "P=a2+b2", "P = 2πr"]
 @app.get("/")
 async def root(request: Request):
@@ -29,7 +29,9 @@ async def fco(a: float):
 @app.get("/fPO")
 async def fpo(a: float):
     result = 2* 3.14 * a
-    return {"answer": round(result, 2)} #p=2пr
+    return {
+        "answer": round(result, 2)
+    } #p=2пr
 
 @app.get("/test")
 async def root(request: Request):
