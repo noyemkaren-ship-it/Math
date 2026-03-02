@@ -37,7 +37,3 @@ async def root(request: Request):
         "test.html", {
             "request": request,
         })
-
-
-
-
