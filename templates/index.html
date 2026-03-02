@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>PIFAGOR</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        a {
+            text-align: center;
+            font-size: 2.1em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .formula-box {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .formula {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .calculator {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+        }
+
+        input {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            width: 200px;
+            margin-right: 10px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #ffd700;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #ffed4a;
+            transform: scale(1.05);
+        }
+
+        .result {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 1.4em;
+            text-align: center;
+            border-left: 5px solid #ffd700;
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+            margin: 40px 0;
+        }
+
+        .description {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏛 Добро пожаловать в PIFAGOR</h1>
+
+    <div class="formula-box">
+        <p class="description">📚 Здесь представлены формулы по математике от 1 до 6 класса:</p>
+        <p class="formula">🔵 Формула S (площади круга): {{ so }}</p>
+        <p class="formula">🟢 Формула C (длины окружности): {{ co }}</p>
+        <p class="formula">🟠 Формула P (периметра круга): {{ po }}</p>
+    </div>
+
+    <div class="calculator-grid">
+        <!-- Калькулятор площади круга -->
+        <div class="calculator">
+            <h2>📐 Площадь круга</h2>
+            <p>S = π × r²</p>
+            <input type="number" id="radius" step="0.1" value="5" placeholder="Радиус (r)">
+            <button onclick="calculateArea()">Вычислить</button>
+            <div class="result" id="areaResult">Ожидание...</div>
+        </div>
+
+        <!-- Калькулятор длины окружности -->
+        <div class="calculator">
+            <h2>📏 Длина окружности</h2>
+            <p>C = π × d</p>
+            <input type="number" id="diameter" step="0.1" value="5" placeholder="Диаметр (d)">
+            <button onclick="calculateLength()">Вычислить</button>
+            <div class="result" id="lengthResult">Ожидание...</div>
+        </div>
+
+        <!-- Калькулятор периметра круга -->
+        <div class="calculator">
+            <h2>🔄 Периметр круга</h2>
+            <p>P = 2π × r</p>
+            <input type="number" id="perimeter" step="0.1" value="5" placeholder="Радиус (r)">
+            <button onclick="calculatePerimeter()">Вычислить</button>
+            <div class="result" id="perimeterResult">Ожидание...</div>
+        </div>
+    </div>
+
+    <script>
+    // Функция для площади круга (/fSO)
+    async function calculateArea() {
+        let r = document.getElementById('radius').value;
+        if (r === '') {
+            document.getElementById('areaResult').innerHTML = '⚠️ Введите радиус!';
+            return;
+        }
+
+        let res = await fetch('/fSO?a=' + r);
+        let data = await res.json();
+
+        document.getElementById('areaResult').innerHTML =
+            `S = 3.14 × ${r}² = <strong>${data.answer}</strong>`;
+    }
+
+    // Функция для длины окружности (/fCO)
+    async function calculateLength() {
+        let d = document.getElementById('diameter').value;
+        if (d === '') {
+            document.getElementById('lengthResult').innerHTML = '⚠️ Введите диаметр!';
+            return;
+        }
+
+        let res = await fetch('/fCO?a=' + d);
+        let data = await res.json();
+
+        document.getElementById('lengthResult').innerHTML =
+            `C = 3.14 × ${d} = <strong>${data.answer}</strong>`;
+    }
+
+    // Функция для периметра круга (/fPO)
+    async function calculatePerimeter() {
+        let r = document.getElementById('perimeter').value;
+        if (r === '') {
+            document.getElementById('perimeterResult').innerHTML = '⚠️ Введите радиус!';
+            return;
+        }
+
+        let res = await fetch('/fPO?a=' + r);
+        let data = await res.json();
+
+        document.getElementById('perimeterResult').innerHTML =
+            `P = 2 × 3.14 × ${r} = <strong>${data.answer}</strong>`;
+    }
+    </script>
+    <hr>
+        <h2 style="text-align: center; margin-top: 40px;">🌀 Симметрия в фигурах</h2>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin: 30px 0; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(5px);">
+
+            <!-- Ось симметрии -->
+            <div style="flex: 1; min-width: 280px; text-align: center;">
+                <h3 style="color: #ffd700;">📏 Ось симметрии</h3>
+                <img src="https://fsd.multiurok.ru/html/2016/12/25/s_58602ec060822/img5.jpg"
+                     alt="Примеры осевой симметрии"
+                     style="max-width: 100%; border-radius: 15px; border: 3px solid #ffd700; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                <p style="text-align: left; margin-top: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                    <strong>Осевая симметрия</strong> — это когда фигуру можно сложить пополам так, что её половинки совпадут.
+                    Линия сгиба и будет осью симметрии. Взгляните на рисунок: у каких фигур она есть?
+                </p>
+            </div>
+
+            <!-- Центр симметрии -->
+            <div style="flex: 1; min-width: 280px; text-align: center;">
+                <h3 style="color: #ffd700;">🎯 Центр симметрии</h3>
+                <img src="https://fsd.multiurok.ru/html/2019/11/19/s_5dd3ccb317075/img_s1259884_0_17.jpg"
+                     alt="Примеры центральной симметрии"
+                     style="max-width: 100%; border-radius: 15px; border: 3px solid #ffd700; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                <p style="text-align: left; margin-top: 15px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                    <strong>Центральная симметрия</strong> — это когда для каждой точки фигуры есть симметричная ей точка относительно центра.
+                    На картинке показаны фигуры, обладающие обоими видами симметрии — и осевой, и центральной.
+                </p>
+            </div>
+        </div>
+    <p>Вот также таблица умножении</p>
+    <div class="calculator">
+        <h2>📊 Таблица Пифагора</h2>
+        <p>Интерактивная таблица умножения</p>
+        <input type="number" id="mult1" placeholder="Число 1" value="5">
+        <input type="number" id="mult2" placeholder="Число 2" value="7">
+        <button onclick="multiply()">Умножить</button>
+        <div class="result" id="multResult">5 × 7 = 35</div>
+    </div>
+
+    <script>
+    async function multiply() {
+        let a = document.getElementById('mult1').value;
+        let b = document.getElementById('mult2').value;
+        let res = await fetch('/multiply?a=' + a + '&b=' + b);
+        let data = await res.json();
+        document.getElementById('multResult').innerHTML = a + ' × ' + b + ' = ' + data.answer;
+    }
+    </script>
+<!-- Калькулятор процентов и формулы -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0;">
+
+    <!-- Калькулятор процентов -->
+    <div class="calculator">
+        <h2>💯 Калькулятор процентов</h2>
+
+        <!-- Формула 1: Найти процент от числа -->
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <p style="color: #ffd700; font-weight: bold;">📌 Формула: % от числа = (число × процент) ÷ 100</p>
+            <input type="number" id="percent1" step="0.1" placeholder="Процент" value="20" style="width: 120px;">
+            <input type="number" id="number1" step="0.1" placeholder="Число" value="1000" style="width: 120px;">
+            <button onclick="percentOfNumber()">Найти</button>
+            <div class="result" id="percentResult1">20% от 1000 = 200</div>
+        </div>
+
+        <!-- Формула 2: Найти сколько процентов составляет одно число от другого -->
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <p style="color: #ffd700; font-weight: bold;">📌 Формула: % = (часть ÷ целое) × 100%</p>
+            <input type="number" id="part" step="0.1" placeholder="Часть" value="50" style="width: 120px;">
+            <input type="number" id="whole" step="0.1" placeholder="Целое" value="200" style="width: 120px;">
+            <button onclick="percentRatio()">Найти %</button>
+            <div class="result" id="percentResult2">50 от 200 = 25%</div>
+        </div>
+
+        <!-- Формула 3: Увеличить число на процент -->
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <p style="color: #ffd700; font-weight: bold;">📌 Формула: число + % = число × (1 + процент÷100)</p>
+            <input type="number" id="number3" step="0.1" placeholder="Число" value="1000" style="width: 120px;">
+            <input type="number" id="percent3" step="0.1" placeholder="Процент" value="15" style="width: 120px;">
+            <button onclick="percentIncrease()">Увеличить</button>
+            <div class="result" id="percentResult3">1000 + 15% = 1150</div>
+        </div>
+    </div>
+
+    <!-- Бонус: Дополнительные формулы -->
+    <div class="calculator">
+        <h2>📐 Полезные формулы</h2>
+
+        <!-- Скорость, время, расстояние -->
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="color: #ffd700;">🚗 Скорость, время, расстояние</h3>
+            <p>S = V × t (расстояние = скорость × время)</p>
+            <input type="number" id="speed" step="0.1" placeholder="Скорость (км/ч)" value="60" style="width: 120px;">
+            <input type="number" id="time" step="0.1" placeholder="Время (ч)" value="2" style="width: 120px;">
+            <button onclick="calculateDistance()">Найти S</button>
+            <div class="result" id="distanceResult">S = 120 км</div>
+        </div>
+
+        <!-- Площадь прямоугольника -->
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="color: #ffd700;">📏 Площадь прямоугольника</h3>
+            <p>S = a × b</p>
+            <input type="number" id="sideA" step="0.1" placeholder="Сторона a" value="5" style="width: 100px;">
+            <input type="number" id="sideB" step="0.1" placeholder="Сторона b" value="8" style="width: 100px;">
+            <button onclick="rectangleArea()">Найти S</button>
+            <div class="result" id="rectangleResult">S = 40</div>
+        </div>
+
+        <!-- Объем куба -->
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <h3 style="color: #ffd700;">🧊 Объем куба</h3>
+            <p>V = a³</p>
+            <input type="number" id="cubeSide" step="0.1" placeholder="Сторона a" value="3" style="width: 120px;">
+            <button onclick="cubeVolume()">Найти V</button>
+            <div class="result" id="cubeResult">V = 27</div>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        // Проценты: найти процент от числа
+        function percentOfNumber() {
+            let percent = document.getElementById('percent1').value;
+            let number = document.getElementById('number1').value;
+            let result = (number * percent) / 100;
+            document.getElementById('percentResult1').innerHTML =
+                `${percent}% от ${number} = <strong>${result.toFixed(2)}</strong>`;
+        }
+
+        // Проценты: найти сколько процентов составляет одно число от другого
+        function percentRatio() {
+            let part = document.getElementById('part').value;
+            let whole = document.getElementById('whole').value;
+            let result = (part / whole) * 100;
+            document.getElementById('percentResult2').innerHTML =
+                `${part} от ${whole} = <strong>${result.toFixed(1)}%</strong>`;
+        }
+
+        // Проценты: увеличить число на процент
+        function percentIncrease() {
+            let number = document.getElementById('number3').value;
+            let percent = document.getElementById('percent3').value;
+            let result = number * (1 + percent/100);
+            document.getElementById('percentResult3').innerHTML =
+                `${number} + ${percent}% = <strong>${result.toFixed(2)}</strong>`;
+        }
+
+        // Расстояние: S = V × t
+        function calculateDistance() {
+            let speed = document.getElementById('speed').value;
+            let time = document.getElementById('time').value;
+            let result = speed * time;
+            document.getElementById('distanceResult').innerHTML =
+                `S = <strong>${result.toFixed(1)} км</strong> (${speed} км/ч × ${time} ч)`;
+        }
+
+        // Площадь прямоугольника: S = a × b
+        function rectangleArea() {
+            let a = document.getElementById('sideA').value;
+            let b = document.getElementById('sideB').value;
+            let result = a * b;
+            document.getElementById('rectangleResult').innerHTML =
+                `S = <strong>${result.toFixed(2)}</strong> (${a} × ${b})`;
+        }
+
+        // Объем куба: V = a³
+        function cubeVolume() {
+            let a = document.getElementById('cubeSide').value;
+            let result = a * a * a;
+            document.getElementById('cubeResult').innerHTML =
+                `V = <strong>${result.toFixed(2)}</strong> (${a}³)`;
+        }
+    </script>
+    <!-- РАЗДЕЛ: ПРОПОРЦИИ, МАСШТАБ, ДИАГРАММЫ И БЮДЖЕТ -->
+    <hr>
+    <h2 style="text-align: center; margin: 40px 0 20px;">📊 ЭКОНОМИЧЕСКАЯ МАТЕМАТИКА</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 30px 0;">
+
+        <!-- ПРОПОРЦИИ -->
+        <div class="calculator">
+            <h2>⚖️ ПРОПОРЦИИ</h2>
+            <p style="color: #ffd700; font-size: 1.2em;">a : b = c : d</p>
+            <p><strong>a × d = b × c</strong></p>
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <p>Найти x в пропорции:</p>
+                <p style="font-size: 1.3em;">
+                    <input type="number" id="propA" value="2" style="width: 60px;"> :
+                    <input type="number" id="propB" value="5" style="width: 60px;"> =
+                    <input type="number" id="propC" value="4" style="width: 60px;"> : x
+                </p>
+                <button onclick="calculateProportion()">Найти x</button>
+                <div class="result" id="propResult">x = 10</div>
+            </div>
+            <p style="font-size: 0.9em; margin-top: 10px;">📌 Пример: 2 : 5 = 4 : 10</p>
+        </div>
+
+        <!-- МАСШТАБ -->
+        <div class="calculator">
+            <h2>🗺️ МАСШТАБ</h2>
+            <p style="color: #ffd700; font-size: 1.2em;">1 : M</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <p>На карте 3 см, масштаб 1:100000</p>
+                <p><strong>Реальное расстояние:</strong></p>
+                <input type="number" id="mapCm" value="3" style="width: 80px;"> см на карте<br>
+                <input type="number" id="scale" value="100000" style="width: 100px;"> масштаб (1:M)
+                <button onclick="calculateScale()" style="margin-top: 10px;">Вычислить</button>
+                <div class="result" id="scaleResult">3 км на местности</div>
+            </div>
+            <p style="font-size: 0.9em;">📌 Формула: Реал = Карта × Масштаб</p>
+        </div>
+
+        <!-- ДИАГРАММЫ -->
+        <div class="calculator">
+            <h2>📊 ДИАГРАММЫ</h2>
+            <p style="color: #ffd700;">Круговая диаграмма 360°</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <p>Бюджет: 50 000 руб.</p>
+                <p>Продукты: <input type="number" id="food" value="20000" style="width: 90px;"> руб.</p>
+                <p>Коммуналка: <input type="number" id="utils" value="10000" style="width: 90px;"> руб.</p>
+                <button onclick="calculatePie()">Рассчитать %</button>
+                <div class="result" id="pieResult">
+                    Продукты: 40% (144°)<br>
+                    Коммуналка: 20% (72°)
+                </div>
+            </div>
+        </div>
+
+        <!-- РАЦИОНАЛЬНЫЕ ЧИСЛА + БЮДЖЕТ -->
+        <div class="calculator">
+            <h2>💰 БЮДЖЕТ (рациональные числа)</h2>
+            <p style="color: #ffd700;">Доходы (+) / Расходы (-)</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <p>Доход: +<input type="number" id="income" value="60000" style="width: 90px;"> руб.</p>
+                <p>Расходы: -<input type="number" id="expenses" value="45000" style="width: 90px;"> руб.</p>
+                <p>Кредит: -<input type="number" id="credit" value="5000" style="width: 90px;"> руб.</p>
+                <button onclick="calculateBudget()">Итог</button>
+                <div class="result" id="budgetResult">
+                    Остаток: +10000 руб.
+                </div>
+            </div>
+            <p style="font-size: 0.9em;">📌 Итог = Доходы + Расходы (отрицательные)</p>
+        </div>
+
+    </div>
+
+    <script>
+    // Пропорции
+    function calculateProportion() {
+        let a = parseFloat(document.getElementById('propA').value);
+        let b = parseFloat(document.getElementById('propB').value);
+        let c = parseFloat(document.getElementById('propC').value);
+        let x = (b * c) / a;
+        document.getElementById('propResult').innerHTML = `x = <strong>${x.toFixed(2)}</strong> (${a} : ${b} = ${c} : ${x.toFixed(2)})`;
+    }
+
+    // Масштаб
+    function calculateScale() {
+        let cm = parseFloat(document.getElementById('mapCm').value);
+        let scale = parseFloat(document.getElementById('scale').value);
+        let realMeters = (cm * scale) / 100;  // в метрах
+        let realKm = realMeters / 1000;       // в километрах
+
+        if (realKm >= 1) {
+            document.getElementById('scaleResult').innerHTML = `<strong>${realKm.toFixed(2)} км</strong> на местности`;
+        } else {
+            document.getElementById('scaleResult').innerHTML = `<strong>${realMeters.toFixed(0)} м</strong> на местности`;
+        }
+    }
+
+    // Диаграммы
+    function calculatePie() {
+        let total = 50000;
+        let food = parseFloat(document.getElementById('food').value);
+        let utils = parseFloat(document.getElementById('utils').value);
+
+        let foodPercent = (food / total) * 100;
+        let utilsPercent = (utils / total) * 100;
+
+        document.getElementById('pieResult').innerHTML = `
+            Продукты: <strong>${foodPercent.toFixed(1)}%</strong> (${(foodPercent * 3.6).toFixed(0)}°)<br>
+            Коммуналка: <strong>${utilsPercent.toFixed(1)}%</strong> (${(utilsPercent * 3.6).toFixed(0)}°)<br>
+            Остаток: <strong>${(100 - foodPercent - utilsPercent).toFixed(1)}%</strong>
+        `;
+    }
+
+    // Бюджет
+    function calculateBudget() {
+        let income = parseFloat(document.getElementById('income').value);
+        let expenses = -parseFloat(document.getElementById('expenses').value);
+        let credit = -parseFloat(document.getElementById('credit').value);
+
+        let total = income + expenses + credit;
+        let color = total >= 0 ? '#4CAF50' : '#f44336';
+
+        document.getElementById('budgetResult').innerHTML = `
+            Итог: <strong style="color: ${color};">${total >= 0 ? '+' : ''}${total.toFixed(2)} руб.</strong><br>
+            <span style="font-size: 0.9em;">Доходы: +${income} | Расходы: ${expenses} | Кредит: ${credit}</span>
+        `;
+    }
+    </script>
+    <!-- РАЗДЕЛ: ОБЫЧНАЯ МАТЕМАТИКА 6 КЛАСС -->
+<hr>
+<h2 style="text-align: center; margin: 40px 0 20px;">📐 МАТЕМАТИКА 6 КЛАСС (ОБЫЧНАЯ)</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 30px 0;">
+
+    <!-- 1. Делимость чисел -->
+    <div class="calculator">
+        <h2>🔢 ДЕЛИМОСТЬ ЧИСЕЛ</h2>
+        <p style="color: #ffd700;">НОД и НОК</p>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <p>Введите два числа:</p>
+            <input type="number" id="num1" value="12" style="width: 80px;"> и
+            <input type="number" id="num2" value="18" style="width: 80px;">
+            <button onclick="calculateNODNOK()">Найти НОД и НОК</button>
+            <div class="result" id="divResult">
+                НОД(12,18) = 6<br>
+                НОК(12,18) = 36
+            </div>
+        </div>
+        <p style="font-size: 0.9em;">📌 Признаки делимости: на 2, 3, 5, 9, 10</p>
+    </div>
+
+    <!-- 2. Обыкновенные дроби -->
+    <div class="calculator">
+        <h2>🥧 ОБЫКНОВЕННЫЕ ДРОБИ</h2>
+        <p style="color: #ffd700;">a/b + c/d = (ad + bc)/bd</p>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <input type="number" id="frac1" value="1" style="width: 60px;">/<input type="number" id="frac2" value="2" style="width: 60px;">
+            <select id="operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">×</option>
+                <option value="/">÷</option>
+            </select>
+            <input type="number" id="frac3" value="1" style="width: 60px;">/<input type="number" id="frac4" value="3" style="width: 60px;">
+            <button onclick="calculateFractions()">=</button>
+            <div class="result" id="fracResult">1/2 + 1/3 = 5/6</div>
+        </div>
+    </div>
+
+    <!-- 3. Отрицательные числа -->
+    <div class="calculator">
+        <h2>➖ ОТРИЦАТЕЛЬНЫЕ ЧИСЛА</h2>
+        <p style="color: #ffd700;">(-a) + b = b - a</p>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <input type="number" id="neg1" value="-5" style="width: 80px;"> +
+            <input type="number" id="neg2" value="3" style="width: 80px;">
+            <button onclick="calculateNeg()">=</button>
+            <div class="result" id="negResult">-5 + 3 = -2</div>
+        </div>
+        <p style="font-size: 0.9em;">📌 Модуль числа |−5| = 5</p>
+    </div>
+
+    <!-- 4. Пропорции -->
+    <div class="calculator">
+        <h2>⚖️ ПРОПОРЦИИ</h2>
+        <p style="color: #ffd700;">a : b = c : d → a×d = b×c</p>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <input type="number" id="propA2" value="2" style="width: 60px;"> :
+            <input type="number" id="propB2" value="5" style="width: 60px;"> =
+            <input type="number" id="propC2" value="4" style="width: 60px;"> : x
+            <button onclick="calculateProportion2()">Найти x</button>
+            <div class="result" id="propResult2">x = 10</div>
+        </div>
+    </div>
+
+    <!-- 5. Проценты -->
+    <div class="calculator">
+        <h2>💯 ПРОЦЕНТЫ</h2>
+        <p style="color: #ffd700;">% от числа = (число × процент) ÷ 100</p>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <input type="number" id="percentNum" value="20" style="width: 70px;">% от
+            <input type="number" id="percentOf" value="1000" style="width: 80px;">
+            <button onclick="calculatePercent2()">=</button>
+            <div class="result" id="percentResult2">20% от 1000 = 200</div>
+        </div>
+    </div>
+
+    <!-- 6. Координатная плоскость -->
+    <div class="calculator">
+        <h2>📈 КООРДИНАТНАЯ ПЛОСКОСТЬ</h2>
+        <p style="color: #ffd700;">Точка (x, y)</p>
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+            <input type="number" id="coordX" value="3" style="width: 60px;"> ,
+            <input type="number" id="coordY" value="-4" style="width: 60px;">
+            <button onclick="showQuadrant()">Определить четверть</button>
+            <div class="result" id="coordResult">Точка (3,-4) в IV четверти</div>
+        </div>
+    </div>
+
+</div>
+
+
+    <a href="test">Если хочешь проверить себя переходи по этой сыллке!</a>
+</body>
+</html>
