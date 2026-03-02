@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алгебра 7 класс • вся программа</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f8fc;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* главный контейнер — как в пифагоре, но чуть шире */
+        .page {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -20px rgba(20, 50, 70, 0.25);
+            padding: 2.8rem 3rem;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 450;
+            letter-spacing: -0.02em;
+            color: #1d3747;
+            border-left: 6px solid #7faec7;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subhead {
+            font-size: 1.2rem;
+            color: #527a8f;
+            margin-bottom: 2.5rem;
+            padding-left: 2rem;
+            font-weight: 350;
+        }
+
+        /* четверти — крупные разделы */
+        .quarter {
+            margin: 3rem 0 2.5rem 0;
+        }
+
+        .quarter-title {
+            font-size: 1.9rem;
+            font-weight: 420;
+            color: #1f4a60;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 2px dashed #b4d0df;
+        }
+
+        .quarter-sub {
+            font-size: 1.2rem;
+            color: #41758b;
+            font-style: italic;
+            margin-bottom: 1.8rem;
+            padding-left: 0.8rem;
+        }
+
+        /* сетка для тем — почти как info-grid но без class */
+        .topics-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .topic-card {
+            flex: 1 1 260px;
+            background: #f9fcff;
+            border-radius: 26px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #d6e6f0;
+            box-shadow: 0 6px 12px -10px #34657c;
+            transition: 0.1s ease;
+        }
+
+        .topic-card:hover {
+            background: #ffffff;
+            border-color: #9dc1d6;
+        }
+
+        .topic-card h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #1a5068;
+            margin-bottom: 0.6rem;
+            border-left: 4px solid #9ac2d9;
+            padding-left: 0.8rem;
+        }
+
+        .topic-card p {
+            color: #2a4b5c;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .topic-card .examples {
+            font-size: 0.9rem;
+            color: #6c8c9e;
+            margin-top: 0.6rem;
+            border-top: 1px dotted #bfd9e8;
+            padding-top: 0.5rem;
+        }
+
+        .topic-card .badge {
+            background: #e1eff7;
+            border-radius: 40px;
+            padding: 0.2rem 1rem;
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #1d5775;
+            margin-top: 0.5rem;
+        }
+
+        /* для формул — отдельный аккуратный блок */
+        .formula-block {
+            background: #ecf3f9;
+            border-radius: 48px;
+            padding: 1.8rem 2rem;
+            margin: 2rem 0 2rem 0;
+            border: 1px solid #bfd8e9;
+        }
+
+        .formula-block h2 {
+            font-size: 1.7rem;
+            font-weight: 430;
+            color: #17445a;
+            margin-bottom: 1rem;
+        }
+
+        .formula-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            justify-content: center;
+        }
+
+        .formula-item {
+            background: white;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.4rem;
+            font-weight: 420;
+            color: #154f68;
+            border: 1px solid #b2d2e8;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .footnote {
+            font-size: 0.95rem;
+            color: #547e94;
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c5dae7, transparent);
+            margin: 2.2rem 0 1.5rem 0;
+        }
+
+        .footer-meta {
+            font-size: 0.95rem;
+            color: #6d8c9d;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .footer-meta a {
+            color: #3f738b;
+            text-decoration: none;
+            border-bottom: 1px dotted #9bbdd1;
+        }
+
+        @media (max-width: 600px) {
+            .page { padding: 1.8rem; }
+            h1 { font-size: 2.1rem; }
+            .quarter-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <h1>📘 Алгебра. 7 класс</h1>
+    <div class="subhead">полная программа • базовый уровень</div>
+
+    <!-- 1 ЧЕТВЕРТЬ -->
+    <div class="quarter">
+        <div class="quarter-title">𝟭-я четверть • числа и начала</div>
+        <div class="topics-grid">
+            <div class="topic-card">
+                <h3>Рациональные числа</h3>
+                <p>Обыкновенные и десятичные дроби, переход между ними. Сравнение, упорядочивание.</p>
+                <div class="examples">½ = 0,5 ; ¾ = 0,75 ; ⅓ ≈ 0,(3)</div>
+                <span class="badge">ключевая тема</span>
+            </div>
+            <div class="topic-card">
+                <h3>Действия с числами</h3>
+                <p>Сложение, вычитание, умножение, деление рациональных чисел. Свойства.</p>
+                <div class="examples">−2,5 + 1,8 = −0,7 ; (−¾)·(−4)=3</div>
+            </div>
+            <div class="topic-card">
+                <h3>Степень с нат. показателем</h3>
+                <p>Определение, вычисление значений. aⁿ = a·a·…·a (n раз).</p>
+                <div class="examples">2⁵ = 32 ; (−3)³ = −27</div>
+            </div>
+            <div class="topic-card">
+                <h3>Задачи на дроби и проценты</h3>
+                <p>Нахождение части числа, числа по его части, процентные расчёты.</p>
+                <div class="examples">15% от 300 = 45 ; ⅔ от 120 = 80</div>
+            </div>
+            <div class="topic-card">
+                <h3>Числовые и букв. выражения</h3>
+                <p>Переменная, допустимые значения, область определения.</p>
+                <div class="examples">3x – 5 ; при x = 2 ⇒ 1</div>
+            </div>
+            <div class="topic-card">
+                <h3>Преобразование выражений</h3>
+                <p>Раскрытие скобок, приведение подобных, тождества.</p>
+                <div class="examples">2(a+b) = 2a+2b ; 3x+5x = 8x</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 ЧЕТВЕРТЬ -->
+    <div class="quarter">
+        <div class="quarter-title">𝟮-я четверть • степени, функции, многочлены</div>
+        <div class="topics-grid">
+            <div class="topic-card">
+                <h3>Свойства степени</h3>
+                <p>Умножение и деление степеней, возведение в степень.</p>
+                <div class="examples">aᵐ·aⁿ = aᵐ⁺ⁿ ; (aᵐ)ⁿ = aᵐⁿ</div>
+            </div>
+            <div class="topic-card">
+                <h3>Понятие функции</h3>
+                <p>Область определения, область значений, график.</p>
+                <div class="examples">y = 2x+1 ; D(y)=R</div>
+            </div>
+            <div class="topic-card">
+                <h3>Линейная функция</h3>
+                <p>y = kx + b, график — прямая. Прямая пропорциональность.</p>
+                <div class="examples">k>0 — возрастает, k<0 — убывает</div>
+            </div>
+            <div class="topic-card">
+                <h3>Одночлены</h3>
+                <p>Стандартный вид, умножение, возведение в степень.</p>
+                <div class="examples">3a²b · 4ab³ = 12a³b⁴</div>
+            </div>
+            <div class="topic-card">
+                <h3>Многочлены</h3>
+                <p>Сложение, вычитание, умножение многочленов.</p>
+                <div class="examples">(2x+3)(x–5) = 2x²–7x–15</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 ЧЕТВЕРТЬ (самая большая) -->
+    <div class="quarter">
+        <div class="quarter-title">𝟯-я четверть • ФСУ — вершина алгебры 7 класса</div>
+
+        <!-- дополнительный блок для многочлена подробно -->
+        <div style="margin-bottom: 1.5rem;">
+            <div class="topic-card" style="max-width: 100%;">
+                <h3>Умножение многочлена на многочлен и группировка</h3>
+                <p>Разложение на множители способом группировки.</p>
+                <div class="examples">ax + bx + ay + by = x(a+b) + y(a+b) = (a+b)(x+y)</div>
+            </div>
+        </div>
+
+        <!-- ФСУ красивым блоком -->
+        <div class="formula-block">
+            <h2>✦ Формулы сокращённого умножения</h2>
+            <div class="formula-grid">
+                <div class="formula-item">(a ± b)² = a² ± 2ab + b²</div>
+                <div class="formula-item">a² – b² = (a–b)(a+b)</div>
+                <div class="formula-item">(a ± b)³ = a³ ± 3a²b + 3ab² ± b³</div>
+                <div class="formula-item">a³ ± b³ = (a ± b)(a² ∓ ab + b²)</div>
+            </div>
+            <div class="footnote">сумма и разность кубов, квадрат суммы/разности, разность квадратов</div>
+        </div>
+
+        <!-- Применение ФСУ карточкой -->
+        <div class="topics-grid">
+            <div class="topic-card">
+                <h3>Применение ФСУ</h3>
+                <p>Разложение многочленов на множители, преобразование выражений.</p>
+                <div class="examples">x² – 9 = (x–3)(x+3) ; 4x² + 12x + 9 = (2x+3)²</div>
+                <span class="badge">база для ОГЭ</span>
+            </div>
+            <div class="topic-card">
+                <h3>Комбинации ФСУ</h3>
+                <p>Смешанные примеры, сокращение дробей, уравнения.</p>
+                <div class="examples">(2a–1)² – (a+2)² = …</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 ЧЕТВЕРТЬ (уравнения и системы) и повторение -->
+    <div class="quarter">
+        <div class="quarter-title">𝟰-я четверть • уравнения, системы и повторение</div>
+        <div class="topics-grid">
+            <div class="topic-card">
+                <h3>Линейное уравнение с одной переменной</h3>
+                <p>Решение уравнений, задачи.</p>
+                <div class="examples">2x – 5 = 9 → x = 7</div>
+            </div>
+            <div class="topic-card">
+                <h3>Линейное уравнение с двумя переменными</h3>
+                <p>ax + by = c, график — прямая.</p>
+                <div class="examples">2x + y = 4</div>
+            </div>
+            <div class="topic-card">
+                <h3>Системы линейных уравнений</h3>
+                <p>Методы подстановки и сложения.</p>
+                <div class="examples">{ x+y=5 ; x–y=1 → x=3, y=2</div>
+            </div>
+            <div class="topic-card">
+                <h3>Элементы статистики</h3>
+                <p>Среднее арифметическое, размах, мода, медиана.</p>
+                <div class="examples">ряд: 3, 5, 5, 7 → мода=5, медиана=5</div>
+            </div>
+            <div class="topic-card">
+                <h3>Итоговое повторение</h3>
+                <p>Обобщение всех тем, подготовка к итоговой работе.</p>
+                <div class="examples">тренажёр по всем разделам</div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <div class="footer-meta">
+        <span>📐 программа соответствует ФГОС (базовый уровень)</span>
+        <span>⋆ 7 класс ⋆ алгебра</span>
+        <a href="#">в начало</a>
+    </div>
+
+    <!-- маленькая звёздочка в духе "просто, элегантно" -->
+    <div style="text-align: right; margin-top: 1.2rem; color: #a6c3d5; font-size: 0.9rem;">✦ всё по полочкам ✦</div>
+</div>
+</body>
+</html>

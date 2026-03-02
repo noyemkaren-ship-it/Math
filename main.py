@@ -6,6 +6,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 formul = ["S = п*r²","C = п*d", "S=a*b", "P=a2+b2", "P = 2πr"]
+
 @app.get("/")
 async def root(request: Request):
     return templates.TemplateResponse(
@@ -45,5 +46,13 @@ async def teoremap(request: Request):
     return templates.TemplateResponse(
         "teorema_pifagora.html", {
             "request": request,
+        }
+    )
+
+@app.get("/seven")
+async def sseven(request: Request):
+    return templates.TemplateResponse(
+        "seven.html", {
+            "request": request
         }
     )
