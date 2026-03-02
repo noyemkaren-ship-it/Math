@@ -39,3 +39,9 @@ async def root(request: Request):
         "test.html", {
             "request": request,
         })
+
+@app.get("/teorema_pifagora")
+async def teoremap(request: Request):
+    return templates.TemplateResponse(
+        "teorema_pifagora.html",
+    )
