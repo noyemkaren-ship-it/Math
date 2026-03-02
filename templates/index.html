@@ -2,8 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>PIFAGOR</title>
+    <!-- Важно для телефонов: масштабирование и ширина под устройство -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>PIFAGOR • мобильная версия</title>
     <style>
+        /* ВСЁ БЕЗ ИЗМЕНЕНИЙ, ТОЛЬКО ДОБАВЛЕНЫ МЕДИАЗАПРОСЫ В КОНЦЕ */
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             max-width: 900px;
@@ -102,9 +105,186 @@
             gap: 20px;
             margin-top: 30px;
         }
+
+        /* ========== МЕДИАЗАПРОСЫ ТОЛЬКО ДЛЯ ТЕЛЕФОНА ========== */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 12px 10px; /* чуть меньше отступы */
+                max-width: 100%;
+                overflow-x: hidden; /* убираем горизонтальный скролл */
+            }
+
+            h1 {
+                font-size: 1.9em; /* помещается на экране */
+                word-break: break-word;
+            }
+
+            a {
+                font-size: 1.3em; /* ссылки меньше */
+                display: inline-block; /* для отступов */
+                margin: 8px 0;
+                word-break: break-word;
+            }
+
+            /* все калькуляторы и карточки */
+            .calculator, .formula-box {
+                padding: 18px 15px;
+                margin: 18px 0;
+                width: 100%;
+                box-sizing: border-box; /* чтобы padding не расширял */
+            }
+
+            /* сетка в одну колонку */
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* инпуты и кнопки на всю ширину */
+            input {
+                width: calc(100% - 24px); /* полная ширина с учётом padding */
+                margin: 0 0 12px 0; /* снизу отступ */
+                display: block;
+                box-sizing: border-box;
+            }
+
+            button {
+                width: 100%;
+                margin-top: 5px;
+                padding: 14px; /* чуть выше для удобства */
+                font-size: 18px; /* крупнее для тапа */
+            }
+
+            /* результаты */
+            .result {
+                font-size: 1.2em;
+                padding: 12px;
+                word-break: break-word;
+            }
+
+            /* все flex/grid элементы внутри */
+            .calculator-grid > *,
+            div[style*="display: grid"],
+            div[style*="display: flex"] {
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+
+            /* карточки с теорией */
+            .calculator h2 {
+                font-size: 1.5em;
+                margin-top: 0;
+            }
+
+            /* изображения */
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* убираем возможное переполнение */
+            hr {
+                margin: 25px 0;
+            }
+
+            /* мелкие правки для встроенных стилей (они остались без class) */
+            div[style*="max-width"] {
+                max-width: 100% !important;
+            }
+
+            div[style*="width: 120px;"] input,
+            div[style*="width: 90px;"] input,
+            div[style*="width: 80px;"] input,
+            div[style*="width: 60px;"] input {
+                width: calc(100% - 20px) !important; /* переопределяем узкие поля */
+                margin-bottom: 8px;
+            }
+
+            /* для select (операции с дробями) */
+            select {
+                width: 100%;
+                padding: 12px;
+                margin: 8px 0;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+
+            /* контейнеры с картинками симметрии */
+            div[style*="display: flex"][style*="flex-wrap: wrap"] {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* подвал, ссылки */
+            .footer-meta, .footer-note {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            /* блок со справочником (уравнения и т.д.) */
+            .calculator[style*="text-align: left;"] {
+                padding: 18px 12px;
+            }
+
+            ul {
+                padding-left: 20px;
+            }
+
+            /* всё, что с фиксированной шириной в style, делаем резиной */
+            [style*="width:"]:not(body):not(html) {
+                max-width: 100% !important;
+                width: auto !important;
+            }
+
+            /* кнопки внутри калькуляторов с процентами и т.д. */
+            button {
+                width: 100%;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            /* заголовки теории */
+            h2 {
+                font-size: 1.6em;
+                line-height: 1.2;
+            }
+
+            /* последний блок "ВАЖНЫЕ ОПРЕДЕЛЕНИЯ" */
+            div[style*="background: rgba(255,215,0,0.1);"] {
+                padding: 15px !important;
+            }
+
+            div[style*="display: grid"][style*="gap: 15px;"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* для очень маленьких экранов (до 400px) */
+        @media screen and (max-width: 400px) {
+            h1 {
+                font-size: 1.7em;
+            }
+
+            .formula {
+                font-size: 1.1em;
+            }
+
+            .result {
+                font-size: 1.1em;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        /* остальные стили без изменений — всё сохранено */
     </style>
 </head>
 <body>
+    <!-- ВЕСЬ КОНТЕНТ БЕЗ ЕДИНОЙ ПРАВКИ (как у вас в коде) -->
     <h1>🏛 Добро пожаловать в PIFAGOR</h1>
 
     <div class="formula-box">
